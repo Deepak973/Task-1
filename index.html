@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task-1</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+  			$('#get-data').on('click', () => {
+			  $.getJSON('https://s3.amazonaws.com/open-to-cors/assignment.json', (data) => {
+			   // console.log(data.products);
+			   	var posts = [];
+				    function sortByKeyDesc(array, key) {
+					return array.sort(function (a, b) {
+							var x = a[key]; var y = b[key];
+							return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+						});	
+					}
+     			    var display_data ='';
+					var sorted=[];
+					var result=[];
+				    $.each(data.products, function(id, obj) {
+						sorted.push(obj);	
+					});
+					result=sortByKeyDesc(sorted, "popularity");
+					$.each(result, function(id, obj) {
+						display_data += '<tr>';
+						display_data += '<td>'+obj.title+'</td>';
+						display_data += '<td>'+obj.price+'</td>';
+						display_data += '<td>'+obj.popularity+'</td>';							
+					});
+					$('#display_table').append(display_data);
+			  });
+			});
+		});
+        
+
+	</script>
+</head>
+<body>
+<button id="get-data">get data</button>
+
+<table id="display_table" border="1">
+	<th>Title</th>
+	<th>Price</th>
+	<th>Popularity</th>
+</table>
+</body>
+</html>
